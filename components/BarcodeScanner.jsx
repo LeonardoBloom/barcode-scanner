@@ -42,7 +42,7 @@ export default function BarcodeScanner( {}) {
   const fetchData = async (number) => {
     try {
       const response = await fetch(
-        `http://192.168.18.46:5050/api/items/${number}`,
+        `http://192.168.17.103:5050/api/items/${number}`,
         {
           method: 'GET'
         }

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Image, Modal, Button, StyleSheet, Text, View, StatusBar, SafeAreaView, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView, Alert} from 'react-native';
 // import Logo from './../assets/images/partial-react-logo.png'
 import { useNavigation } from '@react-navigation/native';
+import PalletItem from './PalletItem';
+import { FlatList } from 'react-native-gesture-handler';
 
 export default function AddPalette( { route }) {
     const navigation = useNavigation()
@@ -35,6 +37,7 @@ export default function AddPalette( { route }) {
             price: result.item_price,
             litres: result.item_quantity,
             image_url: result.item_image,
+            item_count: 1,
             });
               setCount((prevCount) => prevCount + 1); // Increment the count for the next item
             } else {
@@ -42,6 +45,7 @@ export default function AddPalette( { route }) {
             }
         }
         console.log(items);
+        console.log("# of items: ", count);
       }, [result.item_id, result.item_price, result.item_name, result.item_image]); // Dependency array to trigger effect when cakeName or cakePrice changes
     
 
@@ -56,13 +60,27 @@ export default function AddPalette( { route }) {
         return Object.keys(errors).length === 0;
     }
 
-    const scanItem = () => {
+    const updateItemCount = (id, newCount) => {
+        setItems(prevItems =>
+            prevItems.map(item =>
+                item.id === id ? { ...item, item_count: newCount } : item
+            )
+        );
+    };
 
-    }
+    const removeItem = (id) => {
+        setItems((prevItems) => prevItems.filter(item => item.id !== id));
+      };
 
     const handleSubmit = () => {
         if(validateForm()) {
-            console.log(`Submitted ${paletteName} on ${currentDate}`);
+            console.log(`Submitted ${paletteName} on ${currentDate}\n`);
+            console.log(`\nWith items: `)
+            items.map(item => {
+                console.log(item.item_count, " x ", item.name)
+            });
+
+                
             setPaletteName("");
 
             setErrors({})
@@ -119,11 +137,11 @@ export default function AddPalette( { route }) {
             <ScrollView style={styles.form}>
 
                 <Text style={styles.labels}>
-                    Palette Name:
+                    Supplier Name:
                 </Text>
                 <TextInput 
                     style={styles.input} 
-                    placeholder="New Palette Name" 
+                    placeholder="Supplier Name" 
                     placeholderTextColor={'gray'}
                     value={paletteName} 
                     onChangeText={setPaletteName}
@@ -135,24 +153,13 @@ export default function AddPalette( { route }) {
                 }
                 <Text style={styles.text}>{paletteName}</Text>
                 
-                <View style={styles.addedItems}>
-                    { items.map(item => (
-                        <View style={styles.itemInfo} key={item.id}>
-                            <Image 
-                                source={{ uri: `${item.image_url}`}}
-                                style={styles.Image}
-                                />
-                                <View>
-                                    <Text style={styles.itemName}>{item.name}</Text>
-                                    <Text style={styles.itemDescription}>{item.litres}</Text>
-                                    <Text style={styles.itemDescription}>Code: #{item.id}</Text>
-                                </View>
-
-                        </View>
-                    ))
-                    }
-
-                </View>
+                
+                        <PalletItem
+                    keyExtractor={item=>item.id}
+                            items={items} 
+                            onUpdateItemCount={updateItemCount}
+                            onRemove={removeItem}
+                        />
 
                 <Button title="+ Add Item"
                     onPress={() => navigation.navigate("AddItem", 
