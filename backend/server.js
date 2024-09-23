@@ -3,11 +3,13 @@ const mysql = require('mysql2');
 
 // ROUTE COLLECTIONS
 const itemRoutes = require('./routes/item.routes');
+const palletRoutes = require('./routes/pallet.routes');
 
 const app = express();
 app.use(express.json());
 
 app.use('/api/items', itemRoutes);
+app.use('/api/pallets', palletRoutes);
 
 app.get('/', (req, res) => {
     res.send('Merchandise System');

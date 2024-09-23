@@ -9,25 +9,25 @@ import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import AddPalette from '../../components/AddPalette';
 import AddItem from '../../components/AddItem';
+import ShowPalettes from './ShowPalettes';
+import PalletInfo from '../../components/PalletInfo';
 import BarcodeScanner from '../../components/BarcodeScanner';
 
 const Stack = createNativeStackNavigator()
 
 export default function HomeScreen() {
   return (
-    // <NavigationContainer>
+    <>
       <Stack.Navigator initialRouteName='AddPalette'>
-        <Stack.Screen name='AddPalette' component={AddPalette} initialParams={{
-          cakeName: '',
-          cakePrice: ''
-
-        }
-        } 
-        />
+        <Stack.Screen name='AddPalette' component={AddPalette} />
         <Stack.Screen name='AddItem' component={AddItem} />
           {/* <AddPalette /> */}
+        <Stack.Screen name='ShowPallet' component={ShowPalettes} />
+        <Stack.Screen name='PalletInfo' component={PalletInfo} />
       </Stack.Navigator>
-    // </NavigationContainer>
+    
+    </>
+    // <NavigationContainer>
   );
 }
 

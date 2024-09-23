@@ -1,19 +1,16 @@
 const mysql = require('mysql2');
 
-// create the MySQL connection
 const db = mysql.createConnection({
-    host: '192.168.17.103',
+    host: 'localhost',
     port: 3306,
     user: 'root',
     password: 'password',
-    database: 'merch_db'
+    database: 'merchandise_db'
 });
 
-
-// check connection to MySQL
 db.connect((err) => {
-    if(err) throw err;
-    console.log("SUCCESSFULLY Connected Merchandise Database");
-});
+    if (err) throw err;
+    console.log("SUCCESSFULLY Connected Merchandise Database from Database")
+})
 
 module.exports = db

@@ -82,13 +82,13 @@ export default function AddPalette( { route }) {
         };
         try {
             const response = await fetch(
-                `http://192.168.17.103:5050/api/pallets/save`,
+                `http://192.168.54.158:5050/api/pallets/save`,
                 {
-                  method: 'POST',
-                  headers: {
+                method: 'POST',
+                headers: {
                     'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(requestBody)
+                },
+                body: JSON.stringify(requestBody)
                 });
                 if (!response.ok) {
                     const errorText = await response.text();
@@ -118,6 +118,8 @@ export default function AddPalette( { route }) {
             // go do POST request to save Pallet
             savePallet(items, supplier)
             Alert.alert(`Saved Pallet from ${supplier} on ${currentDate}`);
+            setItems([])
+            setsupplier("")
             console.log(`Saved pallet from "${supplier}" on ${currentDate}`);
             // setPaletteName("");
             
