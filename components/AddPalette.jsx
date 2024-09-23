@@ -3,6 +3,7 @@ import { Image, Modal, Button, StyleSheet, Text, View, StatusBar, SafeAreaView, 
 // import Logo from './../assets/images/partial-react-logo.png'
 import { useNavigation } from '@react-navigation/native';
 import PalletItem from './PalletItem';
+// import { savePallet } from './api/savePallet'
 import { FlatList } from 'react-native-gesture-handler';
 
 export default function AddPalette( { route }) {
@@ -13,7 +14,7 @@ export default function AddPalette( { route }) {
     const [count, setCount] = useState(1);
     const [newData, setNewData] = useState({})
 
-    const [paletteName, setPaletteName] = useState('')
+    const [supplier, setsupplier] = useState('')
     const [items, setItems] = useState([]);
     const [errors, setErrors] = useState({})
 
@@ -54,7 +55,9 @@ export default function AddPalette( { route }) {
     const validateForm = () => {
         let errors = {}
 
-        if (!paletteName) errors.paletteName = "Please name the palette";
+        console.log(items.length);
+        if (!supplier) errors.supplier = "Please name the Supplier";
+        if (items.length < 1) errors.items = "No items added in pallet";
         
         setErrors(errors);
         return Object.keys(errors).length === 0;
@@ -70,18 +73,54 @@ export default function AddPalette( { route }) {
 
     const removeItem = (id) => {
         setItems((prevItems) => prevItems.filter(item => item.id !== id));
-      };
+    };
+
+    const savePallet = async (items, supplier) => {
+        const requestBody = {
+            supplier: supplier,
+            items: items,
+        };
+        try {
+            const response = await fetch(
+                `http://192.168.17.103:5050/api/pallets/save`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(requestBody)
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error (`failed to send items: ${errorText}`)
+                }
+                const data = await response.json();
+                
+                console.log('Items sent successfully', data);
+                return data;
+            
+        } catch (error) {
+            console.error('Error Saving Pallet with items: ', error.message);
+            throw error;
+        }
+    }
 
     const handleSubmit = () => {
         if(validateForm()) {
-            console.log(`Submitted ${paletteName} on ${currentDate}\n`);
+            console.log(`Submitted ${supplier} on ${currentDate}\n`);
             console.log(`\nWith items: `)
             items.map(item => {
                 console.log(item.item_count, " x ", item.name)
             });
 
-                
-            setPaletteName("");
+            console.log("sending: ", JSON.stringify(items))
+            
+            // go do POST request to save Pallet
+            savePallet(items, supplier)
+            Alert.alert(`Saved Pallet from ${supplier} on ${currentDate}`);
+            console.log(`Saved pallet from "${supplier}" on ${currentDate}`);
+            // setPaletteName("");
+            
 
             setErrors({})
         }
@@ -143,15 +182,18 @@ export default function AddPalette( { route }) {
                     style={styles.input} 
                     placeholder="Supplier Name" 
                     placeholderTextColor={'gray'}
-                    value={paletteName} 
-                    onChangeText={setPaletteName}
+                    value={supplier} 
+                    onChangeText={setsupplier}
                     // autoCorrect={true}
                     autoCapitalize="characters"
                 />
                 {
-                    errors.paletteName ? <Text style={styles.errorText}>{errors.paletteName}</Text> : null
+                    errors.supplier ? <Text style={styles.errorText}>{errors.supplier}</Text> : null
                 }
-                <Text style={styles.text}>{paletteName}</Text>
+                <Text style={styles.text}>{supplier}</Text>
+                        {
+                            errors.items ? <Text style={styles.errorText}>{errors.items}</Text> : null
+                        }
                 
                 
                         <PalletItem

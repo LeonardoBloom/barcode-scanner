@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { Text, Alert, Button, StyleSheet, View, TouchableOpacity, TouchableHighlight, Pressable } from 'react-native';
+import { Text,ActivityIndicator, Alert, Button, StyleSheet, View, TouchableOpacity, TouchableHighlight, Pressable } from 'react-native';
 import { Camera, CameraView, useCameraPermissions} from 'expo-camera';
 import { CameraType } from 'expo-camera/build/legacy/Camera.types';
  // Import the CameraType enum
  import { useNavigation } from '@react-navigation/native';
+//  import './api/fetchBarcodeData'
+
 
 export default function BarcodeScanner( {}) {
 
   const [cameraType, setCameraType] = useState(CameraType.back); // Initialize with CameraType.back
   const [permission, requestPermission] = useCameraPermissions();
   const [barcodeScanned, setBarcodeScanned] = useState(false);
+  const [loading, setLoading] = useState(false);
   const currentDate = new Date().toLocaleDateString();
   const navigation = useNavigation();
 
@@ -28,18 +31,22 @@ export default function BarcodeScanner( {}) {
 
   function handleBarcode(scanningResult) {
     
-    
+  
     if (barcodeScanned) {
       setBarcodeScanned(false)
       // Alert.alert(`Scanned ${scanningResult.type} of ${scanningResult.data} on ${currentDate}`)
-
+      
       //compare with db
-      fetchData(scanningResult.data)
+      
+      fetchBarcodeData(scanningResult.data)
+      setLoading(true);
+
+
     }
   }
 
 
-  const fetchData = async (number) => {
+  const fetchBarcodeData = async (number) => {
     try {
       const response = await fetch(
         `http://192.168.17.103:5050/api/items/${number}`,
@@ -50,6 +57,9 @@ export default function BarcodeScanner( {}) {
       const data = await response.json()
       const result = data[0]
       console.log('this is result', result)
+      if (!result) {
+        throw err;
+      }
       // Alert.alert(`${result.item_name} at ${result.item_price}`)
       navigation.navigate("AddPalette", result)
       } catch (err) {
@@ -67,6 +77,10 @@ export default function BarcodeScanner( {}) {
 
   return (
     <View style={styles.container}>
+    <Text>
+      {loading & <ActivityIndicator />}
+
+    </Text>
       <CameraView 
         barcodeScannerSettings={{
           barcodeTypes: ["qr", "code128", 'aztec' , 'ean13' , 'ean8', 'pdf417' , 'upc_e' , 'datamatrix' , 'code39' , 'code93' , 'itf14' , 'codabar', 'upc_a'],
