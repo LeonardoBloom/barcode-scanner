@@ -77,10 +77,10 @@ export default function BarcodeScanner( {}) {
 
   return (
     <View style={styles.container}>
-    <Text>
+    {/* <Text>
       {loading & <ActivityIndicator />}
 
-    </Text>
+    </Text> */}
       <CameraView 
         barcodeScannerSettings={{
           barcodeTypes: ["qr", "code128", 'aztec' , 'ean13' , 'ean8', 'pdf417' , 'upc_e' , 'datamatrix' , 'code39' , 'code93' , 'itf14' , 'codabar', 'upc_a'],

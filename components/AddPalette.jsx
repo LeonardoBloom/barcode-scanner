@@ -144,7 +144,7 @@ export default function AddPalette( { route }) {
         
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
 
-                            <Button title="Make a Decision" onPress={() => setModalVisible(true)} />
+                            {/* <Button title="Make a Decision" onPress={() => setModalVisible(true)} />
                                 
                                 <Modal
                                     transparent={true}
@@ -154,7 +154,7 @@ export default function AddPalette( { route }) {
                                 >
                                     <View style={styles.modalContainer}>
                                     <View style={styles.modalContent}>
-                                        {/* You can use any local or remote image here */}
+                                        
                                         <Image
                                         source={{uri: 'https://preppykitchen.com/wp-content/uploads/2022/07/Red-Velvet-Recipe-Card-1a.jpg'}} // Replace with your image
                                         style={styles.image}
@@ -173,7 +173,7 @@ export default function AddPalette( { route }) {
                                         </View>
                                     </View>
                                     </View>
-                                </Modal>
+                                </Modal> */}
 
             <ScrollView style={styles.form}>
 
@@ -199,7 +199,7 @@ export default function AddPalette( { route }) {
                 
                 
                         <PalletItem
-                    keyExtractor={item=>item.id}
+                            keyExtractor={item=>item.id}
                             items={items} 
                             onUpdateItemCount={updateItemCount}
                             onRemove={removeItem}
@@ -211,7 +211,7 @@ export default function AddPalette( { route }) {
                     />
 
                 <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
-                    <Text style={styles.saveButtonText} >Save Palette</Text>
+                    <Text style={styles.saveButtonText} >Save Pallet</Text>
                 </TouchableOpacity>
             </ScrollView>
         </KeyboardAvoidingView>
@@ -314,7 +314,7 @@ const styles = StyleSheet.create ({
     },  
     saveButton: {
         marginHorizontal: 'auto',
-        marginTop: 0,
+        marginTop: 20,
         backgroundColor: 'coral',
         paddingHorizontal: 50,
         paddingVertical:10,

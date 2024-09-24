@@ -33,9 +33,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="ShowPalettes"
+        name="ShowPallets"
         options={{
-          title: 'Palettes',
+          title: 'Pallets',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'reader' : 'reader-outline'} color={color} />
           ),

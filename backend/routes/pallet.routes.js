@@ -18,6 +18,20 @@ router.get('/get', async (req, res) => {
     console.log("GET all PALLETS request")
 })
 
+router.get('/get/:pallet_id', async (req, res) => {
+    const { pallet_id } = req.params;
+    const sql = 'SELECT * from pallet_items where pallet_id = ?';
+
+    db.query(sql, [pallet_id], (err, results) => {
+        if (err) {
+            console.error('Error fetching Pallets', err.message);
+            return res.status(500).json({error: 'failed to fetch pallet'})
+        }
+        res.json(results)
+        console.log(`Recovered pallet #${pallet_id}`)
+    });
+});
+
 
 // Save a new pallet
 router.post('/save', async (req, res) => {

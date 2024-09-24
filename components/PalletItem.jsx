@@ -46,6 +46,8 @@ export default function PalletItem({ items, onUpdateItemCount, onRemove }) {
 
     return (
         <>
+        { items.length > 0 ?
+        
             <View style={styles.addedItems}>
                 { items.map(item => (
                     <View style={styles.itemInfo} key={item.id}>
@@ -105,6 +107,7 @@ export default function PalletItem({ items, onUpdateItemCount, onRemove }) {
                 ))
                 }
             </View>
+            : "" }
         </>
     )
 }

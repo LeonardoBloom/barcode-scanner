@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react"
-import { Text , StyleSheet, View, TouchableOpacity} from "react-native"
+import { Text , StyleSheet, View, TouchableOpacity, ActivityIndicator} from "react-native"
 // import { ScrollView } from "react-native-gesture-handler"
 import {GestureHandlerRootView, ScrollView} from "react-native-gesture-handler"
 import { RefreshControl } from "react-native"
+import { useNavigation } from '@react-navigation/native';
 
-export default function ShowPalettes() {
+
+export default function ShowPallets( { }) {
+
+    const navigation = useNavigation()
 
     const [pallets, setPallets] = useState([])
     const [loading, setLoading] = useState(false)
@@ -17,7 +21,7 @@ export default function ShowPalettes() {
     const getPallets = async () => {
         setLoading(true)
         try {
-            const response = await fetch(`http://192.168.54.158:5050/api/pallets/get`, {
+            const response = await fetch(`http://192.168.45.47:5050/api/pallets/get`, {
                 method: 'GET', // Use GET if you're retrieving data
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,12 +76,12 @@ export default function ShowPalettes() {
             }>
                 <Text style={styles.showPalletsHeading}>Show ALL Pallets:</Text>
                 <View style={styles.palletList}>
-                    {pallets.map(pallet => (
-                        <>
-                        
-                        <TouchableOpacity onPress={() => console.log(`Pallet ${pallet.pallet_id} pressed`)} style={styles.touchable} key={pallet.pallet_id}>
+                    {loading ? <ActivityIndicator size='large'></ActivityIndicator> : (
 
-                            <View style={styles.singlePallet}>
+                    pallets.map(pallet => (                        
+                        <TouchableOpacity key={pallet.pallet_id} onPress={() => navigation.navigate("PalletInfo", pallet)} style={styles.touchable}>
+
+                            <View key={pallet.pallet_id} style={styles.singlePallet}>
                                 <View style={styles.palletInfo}>
                                     <View style={styles.palletSupplier}>
                                         <Text style={styles.palletSupplierText}>{pallet.supplier_name}</Text>
@@ -91,10 +95,9 @@ export default function ShowPalettes() {
                                     <Text style={styles.palletDateTime}>{parseTime(pallet.date_created)}</Text>
                                 </View>
                             </View>
-                        </TouchableOpacity>
-                        </>
-                        
-                    ))}
+                        </TouchableOpacity>                        
+                    ))
+                    )}
                 </View>
             </ScrollView>
         </GestureHandlerRootView>
@@ -103,7 +106,7 @@ export default function ShowPalettes() {
 
 const styles = StyleSheet.create ({
     palletList: {
-        borderWidth:2,
+        // borderWidth:2,
         flexDirection: 'column-reverse',
     },
     showPallets: {
