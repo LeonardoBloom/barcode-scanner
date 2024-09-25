@@ -4,38 +4,69 @@ import { Text , StyleSheet, View, TouchableOpacity, RefreshControl, ActivityIndi
 import { ScrollView, GestureHandlerRootView } from "react-native-gesture-handler"
 import { Table, Row, Rows } from 'react-native-table-component';
 
-
 export default function PalletInfo( { route }) {
 
-    const navigation = useNavigation()
+    // const navigation = useNavigation()
     const [loading, setLoading] = useState(true)
+    const [item, setItem] = useState([])
 
-    const [tableHead] = useState(['Head', 'Head2', 'Head3', 'Head4']);
-    const [tableData] = useState([
-        ['Head', 'Head2', 'Head3', 'Head4'],
-        ['Head', 'Head2', 'Head3', 'Head4'],
-        ['Head', 'Head2', 'Head3', 'Head4'],
-        ['Head', 'Head2', 'Head3', 'Head4'],
+    const [tableHead] = useState(['Item', 'Qty', 'Count']);
+    const [tableData, setTableData] = useState([
+        // [item_name, item_quantity, item_count],
+        // [item_name, item_quantity, item_count],
     ]);
+
+    
+    useEffect(() => {
+        getPalletInfo()
+    }, []);
+
+    const fillTable = (data) => {
+        let tableInfo = []
+        for(let x = 0; x < data.length; x ++) {
+            tableInfo.push([data[x].item_name, data[x].item_quantity, data[x].item_count])
+        }
+        console.log(tableInfo)
+        setTableData(tableInfo)
+    }
 
     let pallet = route.params || {}
     // pallet_id
     // supplier_name
     // date_created
+    
+    const getPalletInfo = async() => {
+        try {
+            const response = await fetch(`http://192.168.48.132:5050/api/pallets/get/${pallet.pallet_id}`, {
+                method: 'GET',
+            })
 
-    const parseDate = (jsonDate) => {
-        const dateObject = new Date(jsonDate);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to retrieve Pallet Items: ${errorText}`);
+            }
 
-        const date = dateObject.toLocaleDateString();
-        return date
+            const data = await response.json()
+            setItem(data)
+            fillTable(data)
+            console.log(item)
+            
+        } catch (error) {
+            console.error('Error retrieving pallet items: ', error.message)
+        } finally {
+            setLoading(false);
+        }
     }
 
-    const parseTime = (jsonTime) => {
-        const timeObject = new Date(jsonTime);
 
-        const time = timeObject.toLocaleTimeString();
-        return time
+    const generateDocument = async() => {
+        try {
+            const response = await fetch('')
+        } catch (error) {
+
+        }
     }
+
 
     return (
         <>
@@ -56,16 +87,60 @@ export default function PalletInfo( { route }) {
                 </View>
 
                 <Text style={styles.loadingIcon}>
-                    {loading && <ActivityIndicator size='large'></ActivityIndicator>}
+                    {loading && <ActivityIndicator size='large'></ActivityIndicator> }
                 </Text>
+                <View style={styles.tableContainer}>
+                    <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
+                        <Row data={tableHead} style={styles.tableHead} textStyle={styles.tableHeadText} />
+                        <Rows data={tableData} textStyle={styles.text} />
+                    </Table>
+                </View>
+                <View>
+                    <TouchableOpacity style={styles.generateButton} onPress={() => console.log('pressed document generation')}>
+                        <Text style={styles.generateButtonText}>Generate Document</Text>
+                    </TouchableOpacity>
+                </View>
             </ScrollView>
             </GestureHandlerRootView>
         </>
     )
 }
 
+const parseDate = (jsonDate) => {
+    const dateObject = new Date(jsonDate);
+
+    const date = dateObject.toLocaleDateString();
+    return date
+}
+
+const parseTime = (jsonTime) => {
+    const timeObject = new Date(jsonTime);
+
+    const time = timeObject.toLocaleTimeString();
+    return time
+}
 
 const styles = StyleSheet.create( {
+    generateButton: {
+        borderWidth: 2,
+        borderRadius: 10,
+        backgroundColor: 'coral',
+        marginHorizontal: 'auto',
+        marginTop: 50,
+        padding: 20,
+    },
+    generateButtonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 20,
+    },
+    tableHeadText: {
+        fontWeight: 'bold',
+        fontSize: 18,
+    },
+    text: {
+        fontSize: 15,
+    },
     loadingIcon: {
         marginHorizontal: 'auto',
         marginTop: 100,

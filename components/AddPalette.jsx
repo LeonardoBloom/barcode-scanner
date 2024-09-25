@@ -75,6 +75,7 @@ export default function AddPalette( { route }) {
         setItems((prevItems) => prevItems.filter(item => item.id !== id));
     };
 
+    // Save Pallet into the DB
     const savePallet = async (items, supplier) => {
         const requestBody = {
             supplier: supplier,
@@ -82,7 +83,7 @@ export default function AddPalette( { route }) {
         };
         try {
             const response = await fetch(
-                `http://192.168.54.158:5050/api/pallets/save`,
+                `http://192.168.48.132:5050/api/pallets/save`,
                 {
                 method: 'POST',
                 headers: {
