@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react"
-import { Text , StyleSheet, View, TouchableOpacity, ActivityIndicator} from "react-native"
+import { Text , StyleSheet, View, TouchableOpacity, ActivityIndicator, Button} from "react-native"
 // import { ScrollView } from "react-native-gesture-handler"
 import {GestureHandlerRootView, ScrollView} from "react-native-gesture-handler"
 import { RefreshControl } from "react-native"
 import { useNavigation } from '@react-navigation/native';
+import generateFile from '../scripts/generateDocument'
+import uploadFile from '../scripts/uploadFile';
+import * as FileSystem from 'expo-file-system';
 
 
 export default function ShowPallets( { }) {
@@ -21,7 +24,7 @@ export default function ShowPallets( { }) {
     const getPallets = async () => {
         setLoading(true)
         try {
-            const response = await fetch(`http://192.168.48.132:5050/api/pallets/get`, {
+            const response = await fetch(`http://192.168.3.215:5050/api/pallets/get`, {
                 method: 'GET', // Use GET if you're retrieving data
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,8 +67,6 @@ export default function ShowPallets( { }) {
         return time
     }
 
-    
-
 
     return (
         <GestureHandlerRootView style={{flex: 1}}>
@@ -99,6 +100,8 @@ export default function ShowPallets( { }) {
                     ))
                     )}
                 </View>
+
+                <Button title='Generate file' onPress={() => console.log("pressed generate file")}></Button>
             </ScrollView>
         </GestureHandlerRootView>
     )

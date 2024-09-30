@@ -3,6 +3,8 @@ import { useEffect, useState, Component } from "react"
 import { Text , StyleSheet, View, TouchableOpacity, RefreshControl, ActivityIndicator} from "react-native"
 import { ScrollView, GestureHandlerRootView } from "react-native-gesture-handler"
 import { Table, Row, Rows } from 'react-native-table-component';
+import generateFile from '../scripts/generateDocument';
+
 
 export default function PalletInfo( { route }) {
 
@@ -37,7 +39,7 @@ export default function PalletInfo( { route }) {
     
     const getPalletInfo = async() => {
         try {
-            const response = await fetch(`http://192.168.48.132:5050/api/pallets/get/${pallet.pallet_id}`, {
+            const response = await fetch(`http://192.168.3.215:5050/api/pallets/get/${pallet.pallet_id}`, {
                 method: 'GET',
             })
 
@@ -59,12 +61,9 @@ export default function PalletInfo( { route }) {
     }
 
 
-    const generateDocument = async() => {
-        try {
-            const response = await fetch('')
-        } catch (error) {
+    const handleGenerateFile = async (pallet, palletInfo) => {     
+        await generateFile(pallet, palletInfo);
 
-        }
     }
 
 
@@ -96,7 +95,7 @@ export default function PalletInfo( { route }) {
                     </Table>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.generateButton} onPress={() => console.log('pressed document generation')}>
+                    <TouchableOpacity style={styles.generateButton} onPress={handleGenerateFile}>
                         <Text style={styles.generateButtonText}>Generate Document</Text>
                     </TouchableOpacity>
                 </View>
