@@ -1,3 +1,12 @@
+# Introduction
+
+This is an app I developed in Expo Go with React Native as a prototype for a logistics company's warehouse management. 
+
+The app's objective is to scan items received using a barcode scanner, where it is then added to a Pallet, which holds all the items received by a supplier, with unique codes. The user is also capable of changing their quantities before uploading the Pallet to the database and applying the stock changes. 
+
+Additionally, there is also a feature to display all the stored Pallets, together with their time, date, name of the supplier, and the unique code for the Pallet. When a pallet is selected, it also displays the items held by it, according to the updated database. 
+
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
