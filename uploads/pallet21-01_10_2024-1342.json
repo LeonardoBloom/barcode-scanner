@@ -1,0 +1,14 @@
+{
+	"pallet_id": 21,
+	"date_created": "2024-09-23T15:47:25.000Z",
+	"supplier_name": "Mika",
+	"items": [
+		{
+			"pallet_id": 21,
+			"item_id": 1234029431234,
+			"item_quantity": "330 ML x 6",
+			"item_count": 1,
+			"item_name": "Heineken Original"
+		}
+	]
+}

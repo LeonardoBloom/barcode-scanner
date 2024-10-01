@@ -1,0 +1,28 @@
+{
+	"pallet_id": 23,
+	"date_created": "2024-09-25T09:07:40.000Z",
+	"supplier_name": "My second Good Pallet",
+	"items": [
+		{
+			"pallet_id": 23,
+			"item_id": 10947593,
+			"item_quantity": "500 ML x 6",
+			"item_count": 3,
+			"item_name": "Castle Lite"
+		},
+		{
+			"pallet_id": 23,
+			"item_id": 20910001,
+			"item_quantity": "330 ML x 6",
+			"item_count": 6,
+			"item_name": "Cerveja 2M"
+		},
+		{
+			"pallet_id": 23,
+			"item_id": 1234029431234,
+			"item_quantity": "330 ML x 6",
+			"item_count": 4,
+			"item_name": "Heineken Original"
+		}
+	]
+}

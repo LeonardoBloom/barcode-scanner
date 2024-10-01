@@ -33,7 +33,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="ShowPallets"
+        name="ShowPalletsScreen"
         options={{
           title: 'Pallets',
           tabBarIcon: ({ color, focused }) => (

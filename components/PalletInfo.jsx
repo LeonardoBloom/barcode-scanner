@@ -38,8 +38,9 @@ export default function PalletInfo( { route }) {
     // date_created
     
     const getPalletInfo = async() => {
+        console.log("The pallet: ", pallet)
         try {
-            const response = await fetch(`http://192.168.3.215:5050/api/pallets/get/${pallet.pallet_id}`, {
+            const response = await fetch(`http://192.168.50.96:5050/api/pallets/get/${pallet.pallet_id}`, {
                 method: 'GET',
             })
 
@@ -51,7 +52,7 @@ export default function PalletInfo( { route }) {
             const data = await response.json()
             setItem(data)
             fillTable(data)
-            console.log(item)
+            console.log("items: ", item)
             
         } catch (error) {
             console.error('Error retrieving pallet items: ', error.message)
@@ -61,8 +62,16 @@ export default function PalletInfo( { route }) {
     }
 
 
-    const handleGenerateFile = async (pallet, palletInfo) => {     
-        await generateFile(pallet, palletInfo);
+    const handleGenerateFile = async () => { 
+        
+        const pallet_and_item_to_JSON = {
+            pallet_id: pallet.pallet_id,
+            date_created: pallet.date_created,
+            supplier_name: pallet.supplier_name,
+            items: item
+        }    
+
+        await generateFile(pallet_and_item_to_JSON);
 
     }
 

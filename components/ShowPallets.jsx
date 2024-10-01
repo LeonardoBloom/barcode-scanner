@@ -24,7 +24,7 @@ export default function ShowPallets( { }) {
     const getPallets = async () => {
         setLoading(true)
         try {
-            const response = await fetch(`http://192.168.3.215:5050/api/pallets/get`, {
+            const response = await fetch(`http://192.168.50.96:5050/api/pallets/get`, {
                 method: 'GET', // Use GET if you're retrieving data
                 headers: {
                     'Content-Type': 'application/json',
